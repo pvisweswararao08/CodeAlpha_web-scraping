@@ -75,7 +75,7 @@ website/
 
 ## 🌐 Live Demo
 
-Hosted on **EdgeOne Pages** → [your-url-here.edgeone.app](https://your-url-here.edgeone.app)
+Hosted on **EdgeOne Pages** → [your-url-here.edgeone.app](https://bookvault.edgeone.app)
 
 ---
 
