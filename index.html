@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BookVault — Discover 1,000 Books</title>
+  <meta name="description" content="Browse, search and explore 1,000 books scraped from books.toscrape.com — complete with covers, prices, ratings and categories."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- ░░ TEXTURE, CANVAS & MOUSE HALO ░░ -->
+<div class="grain-overlay"></div>
+<canvas class="nebula-canvas" id="nebulaCanvas"></canvas>
+<div class="mouse-halo" id="mouseHalo"></div>
+
+<!-- ░░ NAVBAR ░░ -->
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <div class="logo-icon-wrap">B</div>
+      <span>Book<strong>Vault</strong></span>
+    </a>
+    <div class="nav-links">
+      <a href="#discover">Discover</a>
+      <a href="#analytics">Analytics</a>
+      <a href="#gems">Best Picks</a>
+      <a href="#catalogue">Catalogue</a>
+    </div>
+    <div class="nav-right">
+      <div class="nav-stat">1,000 Books</div>
+      <div class="nav-stat accent">50 Categories</div>
+      <button class="theme-toggle" id="themeToggle" title="Toggle dark / light mode" aria-label="Toggle theme">
+        <span class="theme-icon-sun">☀️</span>
+        <span class="theme-icon-moon">🌙</span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ░░ HERO ░░ -->
+<header class="hero">
+  <div class="hero-bg">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="hero-grid-lines"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-pill">
+      <span class="pill-dot"></span>
+      Web Scraping Project · 1,000 Books
+    </div>
+    <h1 class="hero-title">
+      Your Ultimate<br/>
+      <span class="title-highlight">Book Discovery</span><br/>
+      Dashboard
+    </h1>
+    <p class="hero-desc">
+      Explore a dataset of <strong>1,000 books</strong> across <strong>50 categories</strong>
+      — with real cover images, prices, ratings, and smart filters to find your next read.
+    </p>
+    <div class="hero-actions">
+      <a href="#catalogue" class="btn btn-hero">Browse Books</a>
+      <a href="#analytics" class="btn btn-outline">View Analytics</a>
+    </div>
+
+    <!-- Quick stats row -->
+    <div class="hero-stats">
+      <div class="hstat"><div class="hstat-val" id="hs-books">1,000</div><div class="hstat-lbl">Books</div></div>
+      <div class="hstat-sep"></div>
+      <div class="hstat"><div class="hstat-val" id="hs-cats">50</div><div class="hstat-lbl">Categories</div></div>
+      <div class="hstat-sep"></div>
+      <div class="hstat"><div class="hstat-val" id="hs-price">£35.07</div><div class="hstat-lbl">Avg Price</div></div>
+      <div class="hstat-sep"></div>
+      <div class="hstat"><div class="hstat-val" id="hs-rating">2.92★</div><div class="hstat-lbl">Avg Rating</div></div>
+    </div>
+  </div>
+
+  <!-- Floating book covers -->
+  <div class="hero-books" id="heroBooks">
+    <div class="hbook hbook-1"><div class="hbook-inner" id="hb1"></div></div>
+    <div class="hbook hbook-2"><div class="hbook-inner" id="hb2"></div></div>
+    <div class="hbook hbook-3"><div class="hbook-inner" id="hb3"></div></div>
+    <div class="hbook hbook-4"><div class="hbook-inner" id="hb4"></div></div>
+    <div class="hbook hbook-5"><div class="hbook-inner" id="hb5"></div></div>
+  </div>
+</header>
+
+<!-- ░░ DISCOVER / FEATURED ░░ -->
+<section class="section scroll-reveal" id="discover">
+  <div class="container">
+    <div class="sec-head">
+      <div>
+        <div class="sec-tag">Scraped Collection</div>
+        <h2 class="sec-title">Featured Reads</h2>
+      </div>
+      <a href="#catalogue" class="view-all">View All →</a>
+    </div>
+    <div class="featured-scroll" id="featuredRow"></div>
+  </div>
+</section>
+
+<!-- ░░ METRICS ░░ -->
+<section class="section scroll-reveal" id="metrics-section">
+  <div class="container">
+    <div class="metrics-grid" id="metricsGrid">
+      <div class="metric-card mc-purple">
+        <div class="mc-dot"></div>
+        <div class="mc-val" id="mc-total">1,000</div>
+        <div class="mc-lbl">Total Books</div>
+        <div class="mc-sub">Across 50 genres</div>
+      </div>
+      <div class="metric-card mc-cyan">
+        <div class="mc-dot"></div>
+        <div class="mc-val" id="mc-avg">£35.07</div>
+        <div class="mc-lbl">Average Price</div>
+        <div class="mc-sub">Range: £10–£60</div>
+      </div>
+      <div class="metric-card mc-amber">
+        <div class="mc-dot"></div>
+        <div class="mc-val" id="mc-rating">2.92</div>
+        <div class="mc-lbl">Average Rating</div>
+        <div class="mc-sub">Out of 5 stars</div>
+      </div>
+      <div class="metric-card mc-green">
+        <div class="mc-dot"></div>
+        <div class="mc-val" id="mc-cheap">£10.00</div>
+        <div class="mc-lbl">Cheapest Book</div>
+        <div class="mc-sub">Best budget pick</div>
+      </div>
+      <div class="metric-card mc-pink">
+        <div class="mc-dot"></div>
+        <div class="mc-val" id="mc-exp">£59.99</div>
+        <div class="mc-lbl">Most Expensive</div>
+        <div class="mc-sub">Premium title</div>
+      </div>
+      <div class="metric-card mc-blue">
+        <div class="mc-dot"></div>
+        <div class="mc-val" id="mc-cats">50</div>
+        <div class="mc-lbl">Categories</div>
+        <div class="mc-sub">All genres covered</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ ANALYTICS ░░ -->
+<section class="section analytics-section scroll-reveal" id="analytics">
+  <div class="container">
+    <div class="sec-head">
+      <div>
+        <div class="sec-tag">Overview Stats</div>
+        <h2 class="sec-title">Catalog Analytics</h2>
+        <p class="sec-desc">Real-time stats for 1,000 scraped books</p>
+      </div>
+    </div>
+
+    <!-- KPI Strip -->
+    <div class="analytics-kpis">
+      <div class="kpi-cell">
+        <div class="kpi-icon blue"><div class="kpi-dot blue"></div></div>
+        <div><div class="kpi-num" id="kpi-total">1,000</div><div class="kpi-label">Total Books</div></div>
+      </div>
+      <div class="kpi-cell">
+        <div class="kpi-icon violet"><div class="kpi-dot violet"></div></div>
+        <div><div class="kpi-num" id="kpi-avg">£35.07</div><div class="kpi-label">Avg Price</div></div>
+      </div>
+      <div class="kpi-cell">
+        <div class="kpi-icon green"><div class="kpi-dot green"></div></div>
+        <div><div class="kpi-num" id="kpi-rating">2.92</div><div class="kpi-label">Avg Rating</div></div>
+      </div>
+      <div class="kpi-cell">
+        <div class="kpi-icon amber"><div class="kpi-dot amber"></div></div>
+        <div><div class="kpi-num" id="kpi-cats">50</div><div class="kpi-label">Categories</div></div>
+      </div>
+    </div>
+
+    <!-- Row 1 -->
+    <div class="charts-grid">
+      <div class="chart-box">
+        <div class="chart-header">
+          <div><div class="chart-title">Top Categories</div><div class="chart-sub">Books per genre</div></div>
+          <span class="chart-lozenge">Top 10</span>
+        </div>
+        <canvas id="chartCats" height="220"></canvas>
+      </div>
+      <div class="chart-box">
+        <div class="chart-header">
+          <div><div class="chart-title">Rating Breakdown</div><div class="chart-sub">1 to 5 stars</div></div>
+        </div>
+        <div class="chart-stats-row">
+          <div class="cs-item"><div class="cs-val">226</div><div class="cs-lbl">1★</div></div>
+          <div class="cs-item"><div class="cs-val">196</div><div class="cs-lbl">2★</div></div>
+          <div class="cs-item"><div class="cs-val">203</div><div class="cs-lbl">3★</div></div>
+          <div class="cs-item"><div class="cs-val">179</div><div class="cs-lbl">4★</div></div>
+          <div class="cs-item"><div class="cs-val">196</div><div class="cs-lbl">5★</div></div>
+        </div>
+        <canvas id="chartRating" height="175"></canvas>
+      </div>
+    </div>
+
+    <!-- Row 2 -->
+    <div class="charts-row2">
+      <div class="chart-box">
+        <div class="chart-header">
+          <div><div class="chart-title">Price Distribution</div><div class="chart-sub">Books across price ranges</div></div>
+          <span class="chart-lozenge">Doughnut</span>
+        </div>
+        <canvas id="chartPrice" height="220"></canvas>
+      </div>
+      <div class="chart-box">
+        <div class="chart-header">
+          <div><div class="chart-title">Price Range Counts</div><div class="chart-sub">Books per price band</div></div>
+        </div>
+        <canvas id="chartPriceBar" height="220"></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ BUDGET GEMS ░░ -->
+<section class="section gems-section scroll-reveal" id="gems">
+  <div class="container">
+    <div class="sec-head">
+      <div>
+        <div class="sec-tag" style="color:var(--apple-orange);border-color:rgba(255,149,0,.3);background:rgba(255,149,0,.08)">Best Value</div>
+        <h2 class="sec-title">Value Reads</h2>
+        <p class="sec-desc">Five-star rated books priced under £15</p>
+      </div>
+    </div>
+    <div class="gems-row" id="gemsRow"></div>
+  </div>
+</section>
+
+<!-- ░░ CATALOGUE ░░ -->
+<section class="section scroll-reveal" id="catalogue">
+  <div class="container">
+    <div class="sec-head center">
+      <div>
+        <div class="sec-tag">Full Collection</div>
+        <h2 class="sec-title">Browse All <span class="grad">1,000 Books</span></h2>
+        <p class="sec-desc">Search, filter and find your next great read</p>
+      </div>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="filter-panel">
+      <div class="filter-search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" id="searchInput" placeholder="Search by title, category, author..."/>
+        <span class="search-count"><span id="book-count">1000</span> books</span>
+      </div>
+      <div class="filter-chips">
+        <div class="fchip-group">
+          <label>Category</label>
+          <select id="catFilter"><option value="">All Categories</option></select>
+        </div>
+        <div class="fchip-group">
+          <label>Rating</label>
+          <select id="ratingFilter">
+            <option value="">Any Rating</option>
+            <option value="5">⭐⭐⭐⭐⭐ 5 Stars</option>
+            <option value="4">⭐⭐⭐⭐ 4 Stars</option>
+            <option value="3">⭐⭐⭐ 3 Stars</option>
+            <option value="2">⭐⭐ 2 Stars</option>
+            <option value="1">⭐ 1 Star</option>
+          </select>
+        </div>
+        <div class="fchip-group">
+          <label>Price</label>
+          <select id="priceFilter">
+            <option value="">Any Price</option>
+            <option value="0-15">Under £15</option>
+            <option value="15-30">£15 – £30</option>
+            <option value="30-45">£30 – £45</option>
+            <option value="45-60">£45+</option>
+          </select>
+        </div>
+        <div class="fchip-group">
+          <label>Sort By</label>
+          <select id="sortFilter">
+            <option value="default">Default</option>
+            <option value="price-asc">Price: Low → High</option>
+            <option value="price-desc">Price: High → Low</option>
+            <option value="rating-desc">Best Rated</option>
+            <option value="title-asc">A → Z</option>
+          </select>
+        </div>
+        <div class="view-toggle">
+          <button class="view-btn active" id="viewGrid" title="Grid view">⊞</button>
+          <button class="view-btn" id="viewList" title="List view">≡</button>
+          <button class="view-btn" id="viewShelf" title="Shelf view">📚</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Book Grid -->
+    <div class="book-grid" id="bookGrid"></div>
+
+    <!-- Pagination -->
+    <div class="pagination" id="pagination"></div>
+  </div>
+</section>
+
+<!-- ░░ MODAL ░░ -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box" id="modalBox">
+    <button class="modal-close" id="modalClose">✕</button>
+    <div class="modal-content" id="modalContent"></div>
+  </div>
+</div>
+
+<!-- ░░ FOOTER ░░ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">📚 BookVault</div>
+        <p>A web scraping project — 1,000 books collected from <a href="https://books.toscrape.com" target="_blank">books.toscrape.com</a> using Python, BeautifulSoup &amp; Scrapy.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Tech Stack</h4>
+        <ul>
+          <li>Python 3.14</li>
+          <li>BeautifulSoup 4</li>
+          <li>Scrapy</li>
+          <li>Pandas</li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Dataset</h4>
+        <ul>
+          <li>1,000 Books</li>
+          <li>50 Categories</li>
+          <li>13 Fields Each</li>
+          <li>CSV · JSON · Excel</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>Built with HTML · CSS · JavaScript · Chart.js &nbsp;|&nbsp; Data: books.toscrape.com</p>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
